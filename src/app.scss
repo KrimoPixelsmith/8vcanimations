@@ -1,0 +1,67 @@
+@import '../node_modules/modern-normalize/modern-normalize.css';
+@import 'scss/reset';
+@import 'scss/variables';
+@import 'scss/typography';
+
+.problem-solving-animation {
+	background-color: #000;
+	color: #fff;
+
+	.container {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+	}
+
+	&__content {
+		max-width: 32%;
+
+		h3 {
+			font-size: 42px;
+			font-weight: 700;
+			margin-bottom: 40px;
+		}
+
+		ul {
+			font-size: 18px;
+			position: relative;
+
+			&:before {
+				content: '';
+				display: block;
+				position: absolute;
+				top: 20px;
+				left: 0;
+				bottom: 20px;
+				width: 2px;
+				opacity: 0.5;
+				background-color: #fff;
+			}
+
+			li {
+				opacity: 0.5;
+				transition: 0.45s $easeOutQuartic;
+
+				&:hover,
+				&.active {
+					opacity: 1;
+					cursor: pointer;
+				}
+
+				button {
+					border: 0;
+					outline: none;
+					background-color: transparent;
+					color: inherit;
+					padding: 20px;
+					padding-left: 40px;
+					margin: 0;
+
+					&:hover {
+						cursor: pointer;
+					}
+				}
+			}
+		}
+	}
+}

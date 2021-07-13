@@ -1,0 +1,15 @@
+$blue: #00a0df;
+$m: 768px;
+$easeOutQuartic: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+.container {
+	max-width: 1310px;
+	margin: 0 auto;
+	padding: 0 25px;
+}
+
+@mixin bp($size) {
+	@media screen and (min-width: $size) {
+		@content;
+	}
+}
