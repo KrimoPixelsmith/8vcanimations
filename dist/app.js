@@ -28,7 +28,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 var App = function App() {
   var svgContainer = document.getElementById('svgAnimation');
-  var navLinks = document.querySelectorAll('.problem-solving-animation li');
+  var navLinks = document.querySelectorAll('.problem-solving-animation li:not(.tracker)');
+  var navLinksTracker = document.querySelector('.problem-solving-animation li.tracker');
   var _svgContainer$viewBox = svgContainer.viewBox.baseVal,
       width = _svgContainer$viewBox.width,
       height = _svgContainer$viewBox.height;
@@ -40,13 +41,15 @@ var App = function App() {
         return navLink.classList.remove('active');
       });
       l.classList.add('active');
+      var targetScale = l.getBoundingClientRect().height;
+      navLinksTracker.style.transform = 'translateY(' + (l.offsetTop + 20) + 'px)';
       gsap__WEBPACK_IMPORTED_MODULE_1__.default.timeline({
         onComplete: function onComplete() {
-          while (svgContainer.firstChild) {
-            svgContainer.removeChild(svgContainer.firstChild);
-            (0,_js_Helpers__WEBPACK_IMPORTED_MODULE_0__.createSVGElements)(svgContainer);
-            tl.restart();
-          }
+          // while (svgContainer.firstChild) {
+          // 	svgContainer.removeChild(svgContainer.firstChild);
+          // }
+          // createSVGElements(svgContainer);
+          tl.restart();
         }
       }).to(svgContainer.querySelectorAll('line'), {
         attr: {
@@ -55,7 +58,7 @@ var App = function App() {
           }
         },
         stagger: 0.05
-      }).to(svgContainer.querySelectorAll('circle'), {
+      }).to([].concat(_toConsumableArray(svgContainer.querySelectorAll('circle')), _toConsumableArray(svgContainer.querySelectorAll('rect'))), {
         rotation: 20,
         opacity: 0,
         svgOrigin: "".concat(width / 2, " ").concat(height / 2),

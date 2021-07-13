@@ -3,7 +3,8 @@ import { createSVGElements } from './js/Helpers';
 
 const App = () => {
 	const svgContainer = document.getElementById('svgAnimation');
-	const navLinks = document.querySelectorAll('.problem-solving-animation li');
+	const navLinks = document.querySelectorAll('.problem-solving-animation li:not(.tracker)');
+	const navLinksTracker = document.querySelector('.problem-solving-animation li.tracker');
 	const { width, height } = svgContainer.viewBox.baseVal;
 	const tl = gsap.timeline();
 
@@ -12,15 +13,19 @@ const App = () => {
 	navLinks.forEach((l) => {
 		l.addEventListener('click', (ev) => {
 			navLinks.forEach((navLink) => navLink.classList.remove('active'));
+
 			l.classList.add('active');
+			const targetScale = l.getBoundingClientRect().height;
+			navLinksTracker.style.transform = 'translateY(' + (l.offsetTop + 20) + 'px)';
 
 			gsap.timeline({
 				onComplete: () => {
-					while (svgContainer.firstChild) {
-						svgContainer.removeChild(svgContainer.firstChild);
-						createSVGElements(svgContainer);
-						tl.restart();
-					}
+					// while (svgContainer.firstChild) {
+					// 	svgContainer.removeChild(svgContainer.firstChild);
+					// }
+
+					// createSVGElements(svgContainer);
+					tl.restart();
 				},
 			})
 				.to(svgContainer.querySelectorAll('line'), {
@@ -31,7 +36,7 @@ const App = () => {
 					},
 					stagger: 0.05,
 				})
-				.to(svgContainer.querySelectorAll('circle'), {
+				.to([...svgContainer.querySelectorAll('circle'), ...svgContainer.querySelectorAll('rect')], {
 					rotation: 20,
 					opacity: 0,
 					svgOrigin: `${width / 2} ${height / 2}`,

@@ -38,6 +38,7 @@ $advisors = [
 			<div class="problem-solving-animation__content">
 				<h3>Our build companies are tackling hard problems in:</h3>
 				<ul>
+					<li class="tracker"></li>
 					<li class="active"><button>Some problem here</button></li>
 					<li><button>Some problem here</button></li>
 					<li><button>Some problem here</button></li>
