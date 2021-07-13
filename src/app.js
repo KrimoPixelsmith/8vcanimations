@@ -16,7 +16,11 @@ const App = () => {
 
 			gsap.timeline({
 				onComplete: () => {
-					tl.restart();
+					while (svgContainer.firstChild) {
+						svgContainer.removeChild(svgContainer.firstChild);
+						createSVGElements(svgContainer);
+						tl.restart();
+					}
 				},
 			})
 				.to(svgContainer.querySelectorAll('line'), {
@@ -39,7 +43,7 @@ const App = () => {
 		});
 	});
 
-	tl.from(svgContainer.querySelectorAll('circle'), {
+	tl.from([...svgContainer.querySelectorAll('circle'), ...svgContainer.querySelectorAll('rect')], {
 		duration: 0.75,
 		rotation: -20,
 		svgOrigin: `${width / 2} ${height / 2}`,

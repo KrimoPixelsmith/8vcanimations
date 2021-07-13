@@ -78,10 +78,29 @@ export const createSVGElements = (svgContainer) => {
 	const { width, height } = svgContainer.viewBox.baseVal;
 	const circles = [
 		...getCoordinatesAroundCircle(3, 15, 30, width / 2, height / 2),
-		...getCoordinatesAroundCircle(9, 8, 150, width / 2, height / 2),
-		...getCoordinatesAroundCircle(7, 25, 250, width / 2, height / 2),
+		...getCoordinatesAroundCircle(7, 25, 270, width / 2, height / 2),
 	];
-	const lines = [...createLinesBetweenCircles(circles), ...createLinesBetweenCircles(circles), ...createLinesBetweenCircles(circles)];
+	const rectangleCoordinates = getCoordinatesAroundCircle(9, null, 160, width / 2, height / 2);
+	const lines = [
+		...createLinesBetweenCircles(circles),
+		...createLinesBetweenCircles(rectangleCoordinates),
+		...createLinesBetweenCircles(circles),
+	];
+
+	rectangleCoordinates.forEach((r) => {
+		const rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+		const rectangleWidth = 70;
+		const rectangleHeight = rectangleWidth;
+
+		rectangle.setAttribute('fill', '#3f3f3f');
+		rectangle.setAttribute('rx', 5);
+		rectangle.setAttribute('x', r.x - rectangleWidth / 2);
+		rectangle.setAttribute('y', r.y - rectangleHeight / 2);
+		rectangle.setAttribute('width', rectangleWidth);
+		rectangle.setAttribute('height', rectangleHeight);
+
+		svgContainer.appendChild(rectangle);
+	});
 
 	// circles.forEach((circleCoordinates) => {
 	// 	const distances = getSortedRelativeDistances(circleCoordinates, circles);

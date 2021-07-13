@@ -11,6 +11,18 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/index.js");
 /* harmony import */ var _js_Helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./js/Helpers */ "./src/js/Helpers.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 
 
 
@@ -30,7 +42,11 @@ var App = function App() {
       l.classList.add('active');
       gsap__WEBPACK_IMPORTED_MODULE_1__.default.timeline({
         onComplete: function onComplete() {
-          tl.restart();
+          while (svgContainer.firstChild) {
+            svgContainer.removeChild(svgContainer.firstChild);
+            (0,_js_Helpers__WEBPACK_IMPORTED_MODULE_0__.createSVGElements)(svgContainer);
+            tl.restart();
+          }
         }
       }).to(svgContainer.querySelectorAll('line'), {
         attr: {
@@ -50,7 +66,7 @@ var App = function App() {
       });
     });
   });
-  tl.from(svgContainer.querySelectorAll('circle'), {
+  tl.from([].concat(_toConsumableArray(svgContainer.querySelectorAll('circle')), _toConsumableArray(svgContainer.querySelectorAll('rect'))), {
     duration: 0.75,
     rotation: -20,
     svgOrigin: "".concat(width / 2, " ").concat(height / 2),
@@ -173,8 +189,21 @@ var createSVGElements = function createSVGElements(svgContainer) {
   var _svgContainer$viewBox = svgContainer.viewBox.baseVal,
       width = _svgContainer$viewBox.width,
       height = _svgContainer$viewBox.height;
-  var circles = [].concat(_toConsumableArray(getCoordinatesAroundCircle(3, 15, 30, width / 2, height / 2)), _toConsumableArray(getCoordinatesAroundCircle(9, 8, 150, width / 2, height / 2)), _toConsumableArray(getCoordinatesAroundCircle(7, 25, 250, width / 2, height / 2)));
-  var lines = [].concat(_toConsumableArray(createLinesBetweenCircles(circles)), _toConsumableArray(createLinesBetweenCircles(circles)), _toConsumableArray(createLinesBetweenCircles(circles))); // circles.forEach((circleCoordinates) => {
+  var circles = [].concat(_toConsumableArray(getCoordinatesAroundCircle(3, 15, 30, width / 2, height / 2)), _toConsumableArray(getCoordinatesAroundCircle(7, 25, 270, width / 2, height / 2)));
+  var rectangleCoordinates = getCoordinatesAroundCircle(9, null, 160, width / 2, height / 2);
+  var lines = [].concat(_toConsumableArray(createLinesBetweenCircles(circles)), _toConsumableArray(createLinesBetweenCircles(rectangleCoordinates)), _toConsumableArray(createLinesBetweenCircles(circles)));
+  rectangleCoordinates.forEach(function (r) {
+    var rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    var rectangleWidth = 70;
+    var rectangleHeight = rectangleWidth;
+    rectangle.setAttribute('fill', '#3f3f3f');
+    rectangle.setAttribute('rx', 5);
+    rectangle.setAttribute('x', r.x - rectangleWidth / 2);
+    rectangle.setAttribute('y', r.y - rectangleHeight / 2);
+    rectangle.setAttribute('width', rectangleWidth);
+    rectangle.setAttribute('height', rectangleHeight);
+    svgContainer.appendChild(rectangle);
+  }); // circles.forEach((circleCoordinates) => {
   // 	const distances = getSortedRelativeDistances(circleCoordinates, circles);
   // 	distances.splice(0, 4);
   // 	distances.forEach((d) => {
